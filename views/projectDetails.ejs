@@ -1,0 +1,46 @@
+<a href="/">Home</a>
+
+<h1><%= project.name %> Details</h1>
+
+<!-- Display Project Details -->
+<p>Project ID: <%= project.id %></p>
+<p>Description: <%= project.description %></p>
+<p>Author: <%= project.author %></p>
+
+<!-- List of Issues -->
+<h2>Issues</h2>
+<ul>
+  <% issues.forEach(issue => { %>
+    <li>
+      <h3><%= issue.title %></h3>
+      <p>Description: <%= issue.description %></p>
+      <p>Author: <%= issue.author %></p>
+      <p>Labels: <%= issue.labels.join(', ') %></p>
+    </li>
+  <% }); %>
+</ul>
+
+<!-- Create New Issue Form -->
+<h2>Create New Issue</h2>
+<form action="/projectDetails/<%= project.id %>/createIssue" method="post">
+  <label for="title">Title</label>
+  <input type="text" name="title" id="title" placeholder="Issue title..." required>
+
+  <label for="description">Description</label>
+  <textarea name="description" id="description" placeholder="Issue description..."></textarea>
+
+  <label for="author">Author</label>
+  <input type="text" name="author" id="author" placeholder="Author name..." required>
+
+  <label for="labels">Labels</label>
+  <select name="labels" id="labels" multiple>
+    <option value="Bug">Bug</option>
+    <option value="Inefficient">Inefficient</option>
+    <option value="Design">Design</option>
+    <option value="Documentation">Documentation</option>
+    <option value="Task">Task</option>
+    <!-- Add more label options if needed -->
+  </select> 
+
+  <button type="submit">Create Issue</button>
+</form>
