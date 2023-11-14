@@ -1,89 +1,122 @@
-// projectDetailController.js
+const Project = require('../models/projectInfo');
+const Issue = require('../models/issueInfo');
 
-const projects = [
-    {id:1, name: 'FirstProject', description: 'Description 1',issues:[
-        {title: 'Issue 1',description:'Issue description 1', author: 'Hemant',labels :['Bug','Design'] }
-    ], author: 'Author 1'},
-    {id:2, name: 'SecondProject', description: 'Description 2',issues:[], author: 'Author 2'},
-    {id:3, name: 'ThirdProject', description: 'Description 3',issues:[], author: 'Author 3'},
-    {id:4, name: 'FourthProject', description: 'Description 4',issues:[], author: 'Author 4'}
-];
+// Function to show project details==> without db
+// const showDetails = (req, res) => {
+//   const projectId = parseInt(req.params.projectId);
+//     //P object in projects array will search for projectId which is specified and find() will return that object P
+//   const project = projects.find((p) => p.id === projectId);
 
-// Function to show project details
-const showDetails = (req, res) => {
-  const projectId = parseInt(req.params.projectId);
-    //P object in projects array will search for projectId which is specified and find() will return that object P
-  const project = projects.find((p) => p.id === projectId);
+//   if (!project) {
+//     res.status(404).send('Project not found, Please check again or create new');
+//     return;
+//   }
 
-  if (!project) {
-    res.status(404).send('Project not found, Please check again or create new');
-    return;
+//   const issues = project.issues;
+
+//   res.render('projectDetails', { project, issues });
+// };
+
+
+// Function to show project details==> with db
+const showDetails = async (req, res) => {
+  try {
+    const projectId = req.params.projectId;
+    // Find project by ID in the database
+    const project = await Project.findById(projectId);
+
+    if (!project) {
+      res.status(404).send('Project not found, Please check again or create new');
+      return;
+    }
+
+    const issues = project.issues || [];
+
+    res.render('projectDetails', { project, issues });
+  } catch (error) {
+    console.error('Error fetching project details:', error);
+    res.status(500).send('Internal Server Error');
   }
-
-  const issues = project.issues;
-
-  res.render('projectDetails', { project, issues });
 };
 
 // Function to filter issues by labels, author, and search
-const filter = (req, res) => {
-  const projectId = parseInt(req.params.projectId);
-  const { labels, author, searchTerm } = req.body;
+const filter = async (req, res) => {
+  try {
+    const projectId = req.params.projectId;
+    const { labels, author, searchTerm } = req.body;
 
-  console.log('Labels:', labels);
-  console.log('Author:', author);
-  console.log('Search Term:', searchTerm);
+    console.log('Labels:', labels);
+    console.log('Author:', author);
+    console.log('Search Term:', searchTerm);
 
-  const issues = projects.find((p) => p.id === projectId).issues || [];
+    // Find project by ID in the database
+    const project = await Project.findById(projectId);
 
-  // Ensure labels is an array
-  const selectedLabels = Array.isArray(labels) ? labels : [labels];
+    if (!project) {
+      res.status(404).send('Project not found, Please check again or create new');
+      return;
+    }
 
-  const filteredIssues = issues.filter((issue) => {
-    // Check if at least one selected label is included in the issue's labels
-    const hasLabels = selectedLabels.length === 0 || selectedLabels.some((label) => issue.labels.includes(label));
+    const issues = project.issues || [];
 
-    // Check if the author matches the specified author (case-insensitive)
-    const isAuthorMatch = !author || (() => {
-      const lowerCaseIssueAuthor = issue.author.toLowerCase();
-      const lowerCaseInputAuthor = author.toLowerCase();
-      console.log('Comparing:', lowerCaseIssueAuthor, lowerCaseInputAuthor);
-      return lowerCaseIssueAuthor === lowerCaseInputAuthor;
-    })();
-    
-    
+    // Ensure labels is an array
+    const selectedLabels = Array.isArray(labels) ? labels : [labels];
 
-    // Check if the title or description contains the specified search term (case-insensitive)
-    const isSearchMatch =
-      !searchTerm ||
-      issue.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      issue.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const filteredIssues = issues.filter((issue) => {
+      // Check if at least one selected label is included in the issue's labels
+      const hasLabels = selectedLabels.length === 0 || selectedLabels.some((label) => issue.labels.includes(label));
 
-    // Return true if at least one condition is satisfied
-    return hasLabels && isAuthorMatch && isSearchMatch;
-  });
+      // Check if the author matches the specified author (case-insensitive)
+      const isAuthorMatch = !author || (() => {
+        const lowerCaseIssueAuthor = issue.author.toLowerCase();
+        const lowerCaseInputAuthor = author.toLowerCase();
+        console.log('Comparing:', lowerCaseIssueAuthor, lowerCaseInputAuthor);
+        return lowerCaseIssueAuthor === lowerCaseInputAuthor;
+      })();
 
-  console.log('Filtered Issues:', filteredIssues);
+      // Check if the title or description contains the specified search term (case-insensitive)
+      const isSearchMatch =
+        !searchTerm ||
+        issue.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        issue.description.toLowerCase().includes(searchTerm.toLowerCase());
 
-  res.render('projectDetails', { project: projects.find((p) => p.id === projectId), issues: filteredIssues });
+      // Return true if at least one condition is satisfied
+      return hasLabels && isAuthorMatch && isSearchMatch;
+    });
+
+    console.log('Filtered Issues:', filteredIssues);
+
+    res.render('projectDetails', { project, issues: filteredIssues });
+  } catch (error) {
+    console.error('Error filtering issues:', error);
+    res.status(500).send('Internal Server Error');
+  }
 };
 
-
-
-  
 // Function to create a new issue
-const createIssue = (req, res) => {
-    console.log("We are in the create issue form");
-    const {title, description, author,labels}= req.body;
-    const newIssue = { title, description, author, labels: Array.isArray(labels) ? labels : [labels] };
-    console.log(newIssue);
-    const projectId = parseInt(req.params.projectId);
-    const project = projects.find((p) => p.id === projectId);
-    const issues = project.issues;
-    issues.push(newIssue);
-    console.log(issues); 
-    
-  res.render('projectDetails', {project,issues});
+const createIssue = async (req, res) => {
+  try {
+    console.log('We are in the create issue form');
+    const { title, description, author, labels } = req.body;
+
+    // Convert labels to an array if it's not already
+    const labelsArray = Array.isArray(labels) ? labels : [labels];
+
+    const newIssue = new Issue({ title, description, author, labels: labelsArray });
+
+    const projectId = req.params.projectId;
+
+    // Save the issue to the Issue schema
+    await newIssue.save();
+
+    // Find the project by ID and update its issues array
+    const project = await Project.findByIdAndUpdate(projectId, { $push: { issues: newIssue } }, { new: true });
+
+    res.render('projectDetails', { project, issues: project.issues });
+  } catch (error) {
+    console.error('Error creating issue:', error);
+    res.status(500).send('Internal Server Error');
+  }
 };
 
 module.exports = {

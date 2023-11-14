@@ -3,7 +3,7 @@
 <h1><%= project.name %> Details</h1>
 
 <!-- Display Project Details -->
-<p>Project ID: <%= project.id %></p>
+<p>Project ID: <%= project._id %></p>
 <p>Description: <%= project.description %></p>
 <p>Author: <%= project.author %></p>
 
@@ -22,7 +22,7 @@
 
 <!-- Create New Issue Form -->
 <h2>Create New Issue</h2>
-<form action="/projectDetails/<%= project.id %>/createIssue" method="post">
+<form action="/projectDetails/<%= project._id %>/createIssue" method="post">
   <label for="title">Title</label>
   <input type="text" name="title" id="title" placeholder="Issue title..." required>
 
