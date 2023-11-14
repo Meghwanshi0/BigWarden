@@ -44,3 +44,26 @@
 
   <button type="submit">Create Issue</button>
 </form>
+
+<!-- Filter and Search Form -->
+<h2>Filter and Search</h2>
+<form action="/projectDetails/<%= project.id %>/filter" method="post">
+  <label for="filterLabels">Filter by Labels</label>
+  <select name="labels" id="filterLabels" multiple>
+    <option value="Bug">Bug</option>
+    <option value="Inefficient">Inefficient</option>
+    <option value="Design">Design</option>
+    <option value="Documentation">Documentation</option>
+    <option value="Task">Task</option>
+    <!-- Add more label options if needed -->
+  </select>
+
+  <label for="filterAuthor">Filter by Author</label>
+  <input type="text" name="author" id="filterAuthor" placeholder="Author name...">
+
+  <label for="searchTerm">Search by Title/Description</label>
+  <input type="text" name="searchTerm" id="searchTerm" placeholder="Search term...">
+
+  <button type="submit">Apply Filters</button>
+</form>
+

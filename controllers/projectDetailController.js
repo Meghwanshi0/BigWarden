@@ -27,30 +27,49 @@ const showDetails = (req, res) => {
 
 // Function to filter issues by labels, author, and search
 const filter = (req, res) => {
-    const projectId = parseInt(req.params.projectId);
-    const { labels, author, searchTerm } = req.body;
-  
-    const issues = projects.find((p) => p.id === projectId).issues || [];
-  
-    const filteredIssues = issues.filter((issue) => {
-      // Check if at least one selected label is included in the issue's labels
-      const hasLabels = labels.length === 0 || labels.some((label) => issue.labels.includes(label));
-  
-      // Check if the author matches the specified author (case-insensitive)
-      const isAuthorMatch = !author || issue.author.toLowerCase() === author.toLowerCase();
-  
-      // Check if the title or description contains the specified search term (case-insensitive)
-      const isSearchMatch =
-        !searchTerm ||
-        issue.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        issue.description.toLowerCase().includes(searchTerm.toLowerCase());
-  
-      // Return true if at least one condition is satisfied
-      return hasLabels || isAuthorMatch || isSearchMatch;
-    });
-  
-    res.render('projectDetails', { project: projects.find((p) => p.id === projectId), filteredIssues });
-  };
+  const projectId = parseInt(req.params.projectId);
+  const { labels, author, searchTerm } = req.body;
+
+  console.log('Labels:', labels);
+  console.log('Author:', author);
+  console.log('Search Term:', searchTerm);
+
+  const issues = projects.find((p) => p.id === projectId).issues || [];
+
+  // Ensure labels is an array
+  const selectedLabels = Array.isArray(labels) ? labels : [labels];
+
+  const filteredIssues = issues.filter((issue) => {
+    // Check if at least one selected label is included in the issue's labels
+    const hasLabels = selectedLabels.length === 0 || selectedLabels.some((label) => issue.labels.includes(label));
+
+    // Check if the author matches the specified author (case-insensitive)
+    const isAuthorMatch = !author || (() => {
+      const lowerCaseIssueAuthor = issue.author.toLowerCase();
+      const lowerCaseInputAuthor = author.toLowerCase();
+      console.log('Comparing:', lowerCaseIssueAuthor, lowerCaseInputAuthor);
+      return lowerCaseIssueAuthor === lowerCaseInputAuthor;
+    })();
+    
+    
+
+    // Check if the title or description contains the specified search term (case-insensitive)
+    const isSearchMatch =
+      !searchTerm ||
+      issue.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      issue.description.toLowerCase().includes(searchTerm.toLowerCase());
+
+    // Return true if at least one condition is satisfied
+    return hasLabels && isAuthorMatch && isSearchMatch;
+  });
+
+  console.log('Filtered Issues:', filteredIssues);
+
+  res.render('projectDetails', { project: projects.find((p) => p.id === projectId), issues: filteredIssues });
+};
+
+
+
   
 // Function to create a new issue
 const createIssue = (req, res) => {
