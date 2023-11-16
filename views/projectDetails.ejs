@@ -1,69 +1,118 @@
-<a href="/">Home</a>
+<!-- views/projectDetails.ejs -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<link rel="stylesheet" href="/css/projectDetails.css">
+<div class="home-container">
+  <a href="/"><i class="fas fa-home"></i> Home</a>
+</div>
 
-<h1><%= project.name %> Details</h1>
+<div class="project-details-container">
+  <!-- Left Side: Project Details -->
+  <div class="project-details">
+    <h1><%= project.name %> Details</h1>
 
-<!-- Display Project Details -->
-<p>Project ID: <%= project._id %></p>
-<p>Description: <%= project.description %></p>
-<p>Author: <%= project.author %></p>
+    <!-- Project Details -->
+    <div class="project-info">
+      <p>Project ID: <%= project._id %></p>
+      <p>Description: <%= project.description %></p>
+      <p>Author: <%= project.author %></p>
+    </div>
+    <div class="separator-line"></div>
+    <!-- List of Issues -->
+    <div class="issues-list">
+      <div class="issues-heading">
+        <h2>Issues</h2>
+      </div>
+      
+      <ul>
+        <% issues.forEach(issue => { %>
+          <li>
+            <div class="issue-header">
+              <h3><%= issue.title %></h3>
+              <p>Author: <%= issue.author %></p>
+            </div>
+            <div class="issue-details">
+              <p>Description: <%= issue.description %></p>
+              <p>Labels: <%= issue.labels.join(', ') %></p>
+            </div>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- Right Side: Create Issue and Filter/Search Forms -->
+<div class="forms-container">
+  <!-- Create New Issue Form -->
+<div class="create-issue-form">
+  <h2 onclick="openCreateIssueModal()">Create New Issue <i class="fas fa-plus"></i></h2>
+  <div id="createIssueModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeCreateIssueModal()">&times;</span>
+      <form action="/projectDetails/<%= project._id %>/createIssue" method="post">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" name="title" id="title" placeholder="Issue title..." required>
+        </div>
+        
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea name="description" id="description" placeholder="Issue description..."></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="author">Author</label>
+          <input type="text" name="author" id="author" placeholder="Author name..." required>
+        </div>
+        
+        <div class="form-group">
+          <label for="labels">Labels(For multiple selections hold Ctrl)</label>
+          <select name="labels" id="labels" multiple>
+            <option value="Bug">Bug</option>
+            <option value="Inefficient">Inefficient</option>
+            <option value="Design">Design</option>
+            <option value="Documentation">Documentation</option>
+            <option value="Task">Task</option>
+            <!-- Add more label options if needed -->
+          </select> 
+        </div>
 
-<!-- List of Issues -->
-<h2>Issues</h2>
-<ul>
-  <% issues.forEach(issue => { %>
-    <li>
-      <h3><%= issue.title %></h3>
-      <p>Description: <%= issue.description %></p>
-      <p>Author: <%= issue.author %></p>
-      <p>Labels: <%= issue.labels.join(', ') %></p>
-    </li>
-  <% }); %>
-</ul>
+        <button type="submit">Create Issue</button>
+      </form>
+    </div>
+  </div>
+</div>
 
-<!-- Create New Issue Form -->
-<h2>Create New Issue</h2>
-<form action="/projectDetails/<%= project._id %>/createIssue" method="post">
-  <label for="title">Title</label>
-  <input type="text" name="title" id="title" placeholder="Issue title..." required>
 
-  <label for="description">Description</label>
-  <textarea name="description" id="description" placeholder="Issue description..."></textarea>
+  <!-- Filter and Search Form -->
+  <div class="filter-search-form">
+    <h2>Filter and Search</h2>
+    <form action="/projectDetails/<%= project.id %>/filter" method="post">
+      <div class="form-group">
+        <label for="filterLabels">Filter by Labels</label>
+        <select name="labels" id="filterLabels" multiple>
+          <option value="Bug">Bug</option>
+          <option value="Inefficient">Inefficient</option>
+          <option value="Design">Design</option>
+          <option value="Documentation">Documentation</option>
+          <option value="Task">Task</option>
+          <!-- Add more label options if needed -->
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="filterAuthor">Filter by Author</label>
+        <input type="text" name="author" id="filterAuthor" placeholder="Author name...">
+      </div>
 
-  <label for="author">Author</label>
-  <input type="text" name="author" id="author" placeholder="Author name..." required>
+      <div class="form-group">
+        <label for="searchTerm">Search by Title/Description</label>
+        <input type="text" name="searchTerm" id="searchTerm" placeholder="Search term...">
+      </div>
 
-  <label for="labels">Labels</label>
-  <select name="labels" id="labels" multiple>
-    <option value="Bug">Bug</option>
-    <option value="Inefficient">Inefficient</option>
-    <option value="Design">Design</option>
-    <option value="Documentation">Documentation</option>
-    <option value="Task">Task</option>
-    <!-- Add more label options if needed -->
-  </select> 
+      <button type="submit">Apply Filters</button>
+    </form>
+  </div>
+</div>
 
-  <button type="submit">Create Issue</button>
-</form>
-
-<!-- Filter and Search Form -->
-<h2>Filter and Search</h2>
-<form action="/projectDetails/<%= project.id %>/filter" method="post">
-  <label for="filterLabels">Filter by Labels</label>
-  <select name="labels" id="filterLabels" multiple>
-    <option value="Bug">Bug</option>
-    <option value="Inefficient">Inefficient</option>
-    <option value="Design">Design</option>
-    <option value="Documentation">Documentation</option>
-    <option value="Task">Task</option>
-    <!-- Add more label options if needed -->
-  </select>
-
-  <label for="filterAuthor">Filter by Author</label>
-  <input type="text" name="author" id="filterAuthor" placeholder="Author name...">
-
-  <label for="searchTerm">Search by Title/Description</label>
-  <input type="text" name="searchTerm" id="searchTerm" placeholder="Search term...">
-
-  <button type="submit">Apply Filters</button>
-</form>
-
+<script src="/js/projectDetails.js"></script>
+<script src="/js/createIssueForm.js"></script>

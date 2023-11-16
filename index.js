@@ -6,7 +6,12 @@ const expressLayouts = require('express-ejs-layouts');
 const home = require('./routes/home');
 const db =require('./config/mongoose');
 
+//using express to define layouts
 app.use(expressLayouts);
+// extract style and scripts from sub pages into the layout
+app.set('layout extractStyles', true);
+app.set('layout extractScripts', true);
+
 // Set EJS as the view engine for express
 app.set('view engine', 'ejs');
 
@@ -17,6 +22,8 @@ app.use(express.urlencoded({ extended: true }));
 //specifying router point
 app.use('/', home);
 
+//Middleware to serve static files
+app.use(express.static('./assets'));
 
 
 

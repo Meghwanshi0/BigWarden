@@ -1,24 +1,33 @@
+<!-- views/home.ejs -->
+<link rel="stylesheet" href="/css/home.css">
+<!-- Include Font Awesome CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
-
-<ul>
+<div class="project-list">
+  <ul>
     <% projects.forEach(project => { %>
       <li>
-        <a href="/projectDetails/<%= project._id %>"> <%= project.name %></a>
+        </i> <!-- Add a star icon -->
+        <a href="/projectDetails/<%= project._id %>"><i class="fa fa-code"></i> <%= project.name %></a>
       </li>
     <% }); %>
   </ul>
+</div>
 
+<div class="create-project-form">
   <h2>Create New Project</h2>
-<form action="/create" method="post">
-  <label for="name">Name</label>
-  <input type="text" name="name" id="name" placeholder="Your project name..." required>
+  <form action="/create" method="post">
+    <label for="name">Name</label>
+    <input type="text" name="name" id="name" placeholder="Your project name..." required>
 
-  <label for="description">Description:</label>
-  <textarea id="description" name="description" placeholder="Your project description..."></textarea>
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" placeholder="Your project description..."></textarea>
 
-  <label for="author">Author:</label>
-  <input type="text" id="author" name="author" placeholder="Author Name" required>
+    <label for="author">Author:</label>
+    <input type="text" id="author" name="author" placeholder="Author Name" required>
 
-  <button type="submit">Create Your Project</button>
-</form>
-
+    <button type="submit">
+      Create Your Project <i class="fas fa-plus"></i>
+    </button>
+  </form>
+</div>
