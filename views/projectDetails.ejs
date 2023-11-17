@@ -1,4 +1,3 @@
-<!-- views/projectDetails.ejs -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 <link rel="stylesheet" href="/css/projectDetails.css">
 <div class="home-container">
@@ -66,13 +65,12 @@
         
         <div class="form-group">
           <label for="labels">Labels(For multiple selections hold Ctrl)</label>
-          <select name="labels" id="labels" multiple>
+          <select name="labels" id="labels" multiple required>
             <option value="Bug">Bug</option>
             <option value="Inefficient">Inefficient</option>
             <option value="Design">Design</option>
             <option value="Documentation">Documentation</option>
             <option value="Task">Task</option>
-            <!-- Add more label options if needed -->
           </select> 
         </div>
 
@@ -88,14 +86,14 @@
     <h2>Filter and Search</h2>
     <form action="/projectDetails/<%= project.id %>/filter" method="post">
       <div class="form-group">
-        <label for="filterLabels">Filter by Labels</label>
-        <select name="labels" id="filterLabels" multiple>
+        <label for="filterLabels">Filter by Labels <p>(For multiple selections hold Ctrl)</p></label>
+       
+        <select name="labels" id="filterLabels" multiple required>
           <option value="Bug">Bug</option>
           <option value="Inefficient">Inefficient</option>
           <option value="Design">Design</option>
           <option value="Documentation">Documentation</option>
           <option value="Task">Task</option>
-          <!-- Add more label options if needed -->
         </select>
       </div>
       
@@ -109,7 +107,10 @@
         <input type="text" name="searchTerm" id="searchTerm" placeholder="Search term...">
       </div>
 
-      <button type="submit">Apply Filters</button>
+      <button type="submit">Apply Filters <i class="fa fa-filter"></i></button>
+    </form>
+    <form action="/projectDetails/<%= project.id %>">
+      <button type="submit">Clear Filters <i class="fa fa-times-circle" aria-hidden="true"></i></button>
     </form>
   </div>
 </div>

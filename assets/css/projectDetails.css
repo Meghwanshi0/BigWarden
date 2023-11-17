@@ -1,6 +1,3 @@
-/* assets/css/projectDetails.css */
-
-/* Project details container styles */
 .project-details-container {
   display: flex;
   justify-content: space-between;
@@ -11,20 +8,19 @@
 .project-details-container .home-container {
   display: flex;
   align-items: center;
-  margin-right: 20px; /* Adjust the margin as needed */
+  margin-right: 20px; 
 }
 
 .project-details-container .home-container a {
-  text-decoration: none; /* Remove the underline from the anchor text */
-  color: #000; /* Set the color for the anchor text */
-  font-weight: bold; /* Optionally, set the font weight */
+  text-decoration: none; 
+  color: #000; 
+  font-weight: bold; 
 }
 
 .project-details-container .home-container i {
-  margin-right: 5px; /* Adjust the margin between the icon and text */
+  margin-right: 5px;
 }
 
-/* Project details styles */
 .project-details {
   border: 2px solid #3498db;
   border-radius: 10px;
@@ -47,8 +43,8 @@
 }
 
 .project-info p {
-  font-size: 25px; /* Adjust the size of the bullet point */
-  color: #020d14; /* Set color for the bullet point */
+  font-size: 25px;
+  color: #020d14;
   margin-right: 10px; 
   margin-bottom: 10px;
 }
@@ -153,6 +149,7 @@
   text-shadow: 1px 0px 0px rgb(27, 37, 36);
   border-radius: 10px;
   padding: 15px;
+  
 }
 
 .filter-search-form form {
@@ -162,7 +159,10 @@
   background-color: #f8fdfe;
   border-radius: 10px;
   padding: 15px;
+  display: flex;
+  flex-direction: column; 
 }
+
 
 .modal {
   display: none;
@@ -185,5 +185,14 @@
 .modal.show {
   transform: translate(-50%, -50%) scale(1);
   opacity: 1;
+}
+
+main {
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 1; /* Allow main content to grow and fill available space */
+  background-color: #caefe0; /* Set a background color */
+  background-size: cover; /* Ensure the background image covers the entire container */
+  background-position: center; /* Center the background image */
 }
 

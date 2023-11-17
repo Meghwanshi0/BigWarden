@@ -18,7 +18,7 @@ const home = async function(req, res){
 };
 
 
-// function for create project
+// function for create project==> before db implementation
 // const create  = (req, res)=>{
 //     console.log("We are in the create project form");
 //     const {name, description, author}= req.body;
@@ -29,9 +29,11 @@ const home = async function(req, res){
 
 // };
 
+
+// function for create project==> after db implementation
 const create = async (req, res) => {
     try {
-      console.log('We are in the create project form');
+      // console.log('We are in the create project form');
       const { name, description, author } = req.body;
   
       // Create a new project instance

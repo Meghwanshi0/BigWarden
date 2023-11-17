@@ -1,13 +1,11 @@
-<!-- views/home.ejs -->
 <link rel="stylesheet" href="/css/home.css">
-<!-- Include Font Awesome CSS -->
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
 
 <div class="project-list">
   <ul>
     <% projects.forEach(project => { %>
       <li>
-        </i> <!-- Add a star icon -->
         <a href="/projectDetails/<%= project._id %>"><i class="fa fa-code"></i> <%= project.name %></a>
       </li>
     <% }); %>

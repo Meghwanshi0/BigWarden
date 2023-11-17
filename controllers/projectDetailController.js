@@ -45,9 +45,9 @@ const filter = async (req, res) => {
     const projectId = req.params.projectId;
     const { labels, author, searchTerm } = req.body;
 
-    console.log('Labels:', labels);
-    console.log('Author:', author);
-    console.log('Search Term:', searchTerm);
+    // console.log('Labels:', labels);
+    // console.log('Author:', author);
+    // console.log('Search Term:', searchTerm);
 
     // Find project by ID in the database
     const project = await Project.findById(projectId);
@@ -62,41 +62,37 @@ const filter = async (req, res) => {
     // Ensure labels is an array
     const selectedLabels = Array.isArray(labels) ? labels : [labels];
 
+    // Filter issues based on labels
     const filteredIssues = issues.filter((issue) => {
-      // Check if at least one selected label is included in the issue's labels
-      const hasLabels = selectedLabels.length === 0 || selectedLabels.some((label) => issue.labels.includes(label));
-
-      // Check if the author matches the specified author (case-insensitive)
-      const isAuthorMatch = !author || (() => {
-        const lowerCaseIssueAuthor = issue.author.toLowerCase();
-        const lowerCaseInputAuthor = author.toLowerCase();
-        console.log('Comparing:', lowerCaseIssueAuthor, lowerCaseInputAuthor);
-        return lowerCaseIssueAuthor === lowerCaseInputAuthor;
-      })();
-
-      // Check if the title or description contains the specified search term (case-insensitive)
-      const isSearchMatch =
-        !searchTerm ||
-        issue.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        issue.description.toLowerCase().includes(searchTerm.toLowerCase());
-
-      // Return true if at least one condition is satisfied
-      return hasLabels && isAuthorMatch && isSearchMatch;
+      return selectedLabels.length === 0 || selectedLabels.some((label) => issue.labels.includes(label));
     });
 
-    console.log('Filtered Issues:', filteredIssues);
+    // Filter issues based on author (case-insensitive)
+    const authorFilteredIssues = filteredIssues.filter((issue) => {
+      return !author || issue.author.toLowerCase().includes(author.toLowerCase());
+    });
 
-    res.render('projectDetails', { project, issues: filteredIssues });
+    // Filter issues based on search term (case-insensitive)
+    const searchTermFilteredIssues = authorFilteredIssues.filter((issue) => {
+      return !searchTerm ||
+        issue.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        issue.description.toLowerCase().includes(searchTerm.toLowerCase());
+    });
+
+    // console.log('Filtered Issues:', searchTermFilteredIssues);
+
+    res.render('projectDetails', { project, issues: searchTermFilteredIssues });
   } catch (error) {
     console.error('Error filtering issues:', error);
     res.status(500).send('Internal Server Error');
   }
 };
 
+
 // Function to create a new issue
 const createIssue = async (req, res) => {
   try {
-    console.log('We are in the create issue form');
+    // console.log('We are in the create issue form');
     const { title, description, author, labels } = req.body;
 
     // Convert labels to an array if it's not already
@@ -122,5 +118,5 @@ const createIssue = async (req, res) => {
 module.exports = {
   showDetails,
   filter,
-  createIssue,
+  createIssue
 };

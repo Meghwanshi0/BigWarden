@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
       modal.style.display = 'block';
       setTimeout(() => {
         modal.classList.add('show');
-      }, 100); // Add a delay of 100 milliseconds
+      }, 100);
     }
   
     function closeCreateIssueModal() {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
       setTimeout(() => {
         modal.style.display = 'none';
-      }, 500); // Wait for the transition to complete before hiding
+      }, 500); // waiting for the transition to complete before hiding
     }
   
     window.openCreateIssueModal = openCreateIssueModal;

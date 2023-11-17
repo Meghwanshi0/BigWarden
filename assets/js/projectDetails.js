@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
       setTimeout(() => {
         modal.style.opacity = '1';
         modal.style.transform = 'translate(-50%, -50%) scale(1)';
-      }, 100); // Add a delay of 100 milliseconds
+      }, 100);
     }
   
     function closeCreateIssueModal() {
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
       setTimeout(() => {
         modal.style.display = 'none';
-      }, 500); // Wait for the transition to complete before hiding
+      }, 500); // Waiting for the transition to complete before hiding
     }
   
     window.openCreateIssueModal = openCreateIssueModal;
