@@ -54,24 +54,24 @@
 }
 
 .issues-list ul {
-  list-style-type: none; /* Remove default list style */
-  padding: 0; /* Remove default padding */
+  list-style-type: none; 
+  padding: 0; 
 }
 
 .issues-list ul li {
-  position: relative; /* Position relative for marker positioning */
-  padding-left: 20px; /* Add padding for marker */
+  position: relative; 
+  padding-left: 20px; 
 }
 
 .issues-list ul li::before {
-  content: "\2022"; /* Unicode character for a bullet point (•) */
-  font-size: 25px; /* Adjust the size of the bullet point */
-  color: #020d14; /* Set color for the bullet point */
-  position: absolute; /* Position absolute for precise placement */
-  left: 0; /* Adjust left position for precise placement */
+  content: "\2022"; 
+  font-size: 25px; 
+  color: #020d14; 
+  position: absolute; 
+  left: 0; 
   top: 13%;
-  transform: translateY(-50%); /* Center vertically */
-  margin-right: 10px; /* Adjust margin for spacing between marker and text */
+  transform: translateY(-50%); 
+  margin-right: 10px;
 }
 
 /* Add a horizontal line to separate Project Details and Issues */
@@ -117,29 +117,29 @@
 .create-issue-form form select{
   margin-bottom: 10px;
   width: 100%;
-  padding: 10px; /* Add padding for form elements */
-  border: 1px solid #3498db; /* Add border color */
-  border-radius: 5px; /* Add border radius for rounded corners */
-  background-color: #e3efeb; /* Set background color for form elements */
+  padding: 10px; 
+  border: 1px solid #3498db; 
+  border-radius: 5px;
+  background-color: #e3efeb; 
 }
 .create-issue-form form button {
   color: #e3efeb;
   margin-bottom: 10px;
   width: 100%;
-  padding: 10px; /* Add padding for form elements */
-  border: 1px solid #3498db; /* Add border color */
-  border-radius: 5px; /* Add border radius for rounded corners */
-  background-color: #0f3148;/* Set background color for form elements */
+  padding: 10px;
+  border: 1px solid #3498db; 
+  border-radius: 5px; 
+  background-color: #0f3148;
 }
 
 .create-issue-form form label {
-  background-color: #0f3148; /* Set a different background color for labels */
-  color: #fff; /* Set text color for labels */
+  background-color: #0f3148; 
+  color: #fff; 
 }
 
 .create-issue-form form select {
-  background-color: #09535f; /* Set a different background color for select dropdown */
-  color: #fff; /* Set text color for select dropdown */
+  background-color: #09535f; 
+  color: #fff;
 }
 /* Filter and search form styles */
 .filter-search-form {
@@ -171,12 +171,12 @@
   left: 50%;
   transform: translate(-50%, -50%) scale(0);
   opacity: 0;
-  width: 50%; /* Adjust the width of the modal */
-  max-width: 500px; /* Set a maximum width if needed */
+  width: 50%; 
+  max-width: 500px; 
   height: 90%;
-  padding: 20px; /* Add padding for content */
-  background-color: #fff; /* Set background color */
-  border-radius: 10px; /* Add border radius for rounded corners */
+  padding: 20px; 
+  background-color: #fff; 
+  border-radius: 10px; 
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
   transition: opacity 0.5s, transform 0.5s;
   overflow-y: auto;
@@ -191,8 +191,8 @@ main {
   display: flex;
   justify-content: space-between;
   flex-grow: 1; /* Allow main content to grow and fill available space */
-  background-color: #caefe0; /* Set a background color */
-  background-size: cover; /* Ensure the background image covers the entire container */
-  background-position: center; /* Center the background image */
+  background-color: #caefe0; 
+  background-size: cover;
+  background-position: center;
 }
 
